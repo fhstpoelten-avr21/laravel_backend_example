@@ -1,0 +1,102 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost/api
+info:
+  title: Backend Coding Example
+  version: 1.0.0
+
+paths:
+  /v1/airlines:
+    get:
+      summary: Get all airlines
+      description: Show all airlines
+      tags: ["Airlines"]
+      responses:
+        200:
+          description: Success
+    post:
+      summary: Create a new airline
+      description: |
+        | Property                          | Rule(s)                                           |
+        | ---                               | ---                                               |
+        | **id**                            | nullable, integer, **unique**            |
+        | **name**                          | **required**, **unique**, string                              |
+        | **country**                       | nullable, string                                  |
+        | **logo**                          | nullable, string                                  |
+        | slogan                            | nullable, string                                  |
+        | head_quarters                     | nullable, string                                  |
+        | website                           | nullable, string                                  |
+        | established                       | nullable, string                                  |
+      tags: ["Airlines"]
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /v1/airlines/{id}:
+    get:
+      summary: Get airline by ID
+      tags: [ "Airlines" ]
+      parameters:
+        - in: path
+          name: id
+          description: Airline ID
+          schema:
+            type: integer
+            default: 1
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      summary: Update airline by ID
+      tags: [ "Airlines" ]
+      parameters:
+        - in: path
+          name: id
+          description: Airline ID
+          schema:
+            type: integer
+            default: 1
+        - in: body
+          name: airline
+          description: The Airline to update
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "My Airline"
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+
+  /v1/passengers/{airlineId?}:
+    get:
+      summary: Get passengers for an airline
+      tags: [ "Passengers" ]
+      parameters:
+        - in: path
+          name: airlineId
+          description: Airline ID
+          schema:
+            type: integer
+            default: 1
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  type: object
